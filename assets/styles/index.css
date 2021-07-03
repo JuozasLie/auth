@@ -1,0 +1,17 @@
+header{
+    width: 100%;
+    height: auto;
+    text-align: center;
+    margin: 3rem;
+}
+main{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    justify-content: center;
+}
+main div{
+    margin: 3rem;
+}
