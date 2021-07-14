@@ -1,6 +1,18 @@
 <?php 
 require_once('core/init.php');
-$db = new DB();
+$insert = DB::getInstance();
+if(!$insert->insert("users", array(
+        "username" => "juozas",
+        "password" => "password",
+        "salt" => "salt",
+        "name" => "error",
+        "joined" => date('Y-m-d'),
+        "group" => "1"
+    ))){
+    echo "oops";
+} else {
+    echo "OK!";
+}
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +30,10 @@ $db = new DB();
     </header>
     <main>
         <div>
-            <a href="login.html">Click here to login in!</a>
+            <a href="login.php">Click here to login in!</a>
         </div>
         <div>
-            <a href="register.html">Click here to register!</a>
+            <a href="register.php">Click here to register!</a>
         </div>
     </main>
 </body>
