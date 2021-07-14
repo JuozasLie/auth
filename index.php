@@ -1,14 +1,9 @@
 <?php 
 require_once('core/init.php');
 $insert = DB::getInstance();
-if(!$insert->insert("users", array(
-        "username" => "juozas",
-        "password" => "password",
-        "salt" => "salt",
-        "name" => "error",
-        "joined" => date('Y-m-d'),
-        "group" => "1"
-    ))){
+if(!$insert->update('users', ["id", "=", 4], [
+        "name" => "Juozasss"
+])){
     echo "oops";
 } else {
     echo "OK!";

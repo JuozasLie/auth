@@ -5,7 +5,8 @@ class DB {
             $_query,
             $_error = false,
             $_results,
-            $_count = 0;
+            $_count = 0,
+            $operators = array('=', '>', '<', '>=', "<=");
     private function __construct(){
         try {
             $this->_pdo = new PDO('mysql:host='.Config::get('mysql/host'). ';dbname='.Config::get('mysql/db'),Config::get('mysql/username'),Config::get('mysql/password'));
@@ -25,11 +26,10 @@ class DB {
             if(count($params)){
                 $x = 1;
                 foreach ($params as $param){
-                    $this->_query->bindParam($x, $param);
+                    $this->_query->bindValue($x, $param);
                     $x++;
                 }
             }
-
             if($this->_query->execute()){
                 $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
                 $this->_count = $this->_query->rowCount();
@@ -41,11 +41,10 @@ class DB {
     }
     public function action($action, $table, $where=array()){
         if(count($where) === 3){
-            $operators = array('=', '>', '<', '>=', "<=");
             $field = $where[0];
             $operator = $where[1];
             $value = $where[2];
-            if(in_array($operator, $operators)){
+            if(in_array($operator, $this->operators)){
                 $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
 
                 if(!$this->query($sql, array($value))->error()){
@@ -73,7 +72,7 @@ class DB {
     }
     public function insert($table, $fields = array())
     {
-        if(count($fields)){
+        if(count($fields) && isset($table)){
             $keys = array_keys($fields);
             $values = '';
             $index = 1;
@@ -85,9 +84,31 @@ class DB {
                 $index++;
             }
             $sql = "INSERT INTO {$table} (`". implode('`, `', $keys) ."`) VALUES ({$values})";
-            die($sql . '<br>' . $values);
             if(!$this->query($sql, $fields)->error()){
                 return true;
+            }
+        }
+        return false;
+    }
+    public function update($table, $where = array(), $fields = array()){
+        if(isset($table) && count($where) === 3){
+            $set = '';
+            $index = 1;
+            $field = $where[0];
+            $operator = $where[1];
+            $value = $where[2];
+            foreach ($fields as $key => $values){
+                $set .= "{$key} = ?";
+                if($index < count($fields)){
+                    $set .= ", ";
+                }
+                $index++;
+            }
+            if(in_array($operator, $this->operators)){
+                $sql = "UPDATE {$table} SET {$set} WHERE {$field} {$operator} {$value}";
+                if(!$this->query($sql, $fields)->error()){
+                    return true;
+                }
             }
         }
         return false;
