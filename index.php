@@ -1,13 +1,7 @@
 <?php 
 require_once('core/init.php');
-$insert = DB::getInstance();
-if(!$insert->update('users', ["id", "=", 4], [
-        "name" => "Juozasss"
-])){
-    echo "oops";
-} else {
-    echo "OK!";
-}
+$db = DB::getInstance();
+$db->get('users', ["username", "=", "juozas"]);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +10,7 @@ if(!$insert->update('users', ["id", "=", 4], [
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/styles/index.css">
+    <link rel="stylesheet" href="assets/styles/index.css" type="text/css">
     <title>Login and register</title>
 </head>
 <body>
