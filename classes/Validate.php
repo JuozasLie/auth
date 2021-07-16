@@ -8,15 +8,15 @@ class Validate {
     }
     public function check($source, $items = array()){
         foreach ($items as $item => $rules){
-//            $field_name = '';
+            $field_name = '';
             foreach ($rules as $rule => $rule_value){
                 $value = trim($source[$item]);
                 $item = escape($item);
-//                if($rule === 'name' && !empty($value)){
-//                    $field_name = $rule_value;
-//                }
+                if($rule === 'field'){
+                    $field_name = $rule_value;
+                }
                 if($rule === 'required' && empty($value)){
-                    $this->addError("{$item} is required");
+                    $this->addError("{$field_name} is required");
                 } else if(!empty($value)){
                     switch ($rule){
                         case "min":

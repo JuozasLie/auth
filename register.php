@@ -1,36 +1,39 @@
 <?php
 require_once 'core/init.php';
-if(Input::exists()){
-    $validate = new Validate();
-    $validation = $validate->check($_POST, array(
-        'username' => array(
-            'name' => 'Vardas',
-            'required' => true,
-            'min' => 2,
-            'max' => 20,
-            'unique' => 'users/username'
-        ),
-        'password' => array(
-            'name' => 'slaptazodis',
-            'required' => true,
-            'min' => 6,
-        ),
-        'password_repeat' => array(
-            'name' => 'pakartokite slaptazodi',
-            'required' => true,
-            'matches' => 'password'
-        ),
-        'name' => array(
-            'name' => 'vardas pavarde',
-            'required' => true,
-            'min' => 2,
-            'max' => 50
-        )
-    ));
-    if($validation->passed()){
-        echo 'submitted';
-    } else {
-        print_r($validate->errors());
+if(Token::check(Input::get("token"))){
+    if (Input::exists()) {
+        $validate = new Validate();
+        $validation = $validate->check($_POST, array(
+            'username' => array(
+                'field' => 'Vardas',
+                'required' => true,
+                'min' => 2,
+                'max' => 20,
+                'unique' => 'users/username'
+            ),
+            'password' => array(
+                'field' => 'slaptazodis',
+                'required' => true,
+                'min' => 6,
+            ),
+            'password_repeat' => array(
+                'field' => 'pakartokite slaptazodi',
+                'required' => true,
+                'matches' => 'password'
+            ),
+            'name' => array(
+                'field' => 'vardas pavarde',
+                'required' => true,
+                'min' => 2,
+                'max' => 50
+            )
+        ));
+        if ($validation->passed()) {
+            Session::put('success', 'you registered successfully');
+            header('Location:index.php');
+        } else {
+            print_r($validate->errors());
+        }
     }
 }
 ?>
@@ -70,6 +73,7 @@ if(Input::exists()){
                     <input type="text" name="name" id="name" value="<?php echo escape(Input::get('username')); ?>">
                 </div>
                 <div>
+                    <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
                     <button type="submit" value="register">Register</button>
                 </div>
             </form>
