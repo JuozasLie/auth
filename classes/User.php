@@ -15,13 +15,12 @@ class User{
                 $user = Session::get($this->_sessionName);
                 if($this->find($user)){
                     $this->_isLoggedIn = true;
+                } else {
+                   throw new Exception('Invalid session');
                 }
-//                else {
-//                    //logout
-//                }
-            } else {
-                $this->find($user);
             }
+        } else {
+            $this->find($user);
         }
     }
     public function data(){
