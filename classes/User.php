@@ -16,7 +16,7 @@ class User{
                 if($this->find($user)){
                     $this->_isLoggedIn = true;
                 } else {
-                   throw new Exception('Invalid session');
+                   Redirect::to(404);
                 }
             }
         } else {
