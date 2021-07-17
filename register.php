@@ -29,10 +29,23 @@ if(Token::check(Input::get("token"))){
             )
         ));
         if ($validation->passed()) {
+            $user = new User();
+            try {
+                $user->create(array(
+                    'username' => Input::get('username'),
+                    'password' => Hash::make(Input::get('password')),
+                    'name' => Input::get('username'),
+                    'group' => 1
+                ));
+            } catch(Exception $e){
+                die($e->getMessage());
+            }
             Session::put('success', 'you registered successfully');
-            header('Location:index.php');
+            Redirect::to("login.php");
         } else {
-            print_r($validate->errors());
+            foreach ($validation->errors() as $error){
+                echo $error, '<br>';
+            }
         }
     }
 }

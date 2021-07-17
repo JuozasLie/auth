@@ -7,3 +7,16 @@
     align-content: center;
     text-align: center;
 }
+form{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+form div{
+    margin: 2rem;
+}
+form button{
+    width: 20%;
+}
