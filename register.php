@@ -44,7 +44,7 @@ if(Token::check(Input::get("token"))){
             Redirect::to("login.php");
         } else {
             foreach ($validation->errors() as $error){
-                echo $error, '<br>';
+                echo escape($error), '<br>';
             }
         }
     }

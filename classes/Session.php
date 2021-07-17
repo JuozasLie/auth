@@ -16,7 +16,7 @@ class Session{
     public static function get($name){
         return $_SESSION[$name];
     }
-    public static function flash($name, $message = ''){
+    public static function flash($name){
         if(self::exist($name)){
             $session = self::get($name);
             self::delete($name);
