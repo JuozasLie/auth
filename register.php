@@ -32,7 +32,7 @@ if(Token::check(Input::get("token"))){
             $user = new User();
             try {
                 $user->create(array(
-                    'username' => Input::get('username'),
+                    'username' => strtolower(Input::get('username')),
                     'password' => Hash::make(Input::get('password')),
                     'name' => Input::get('username'),
                     'group' => 1

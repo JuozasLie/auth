@@ -1,3 +1,11 @@
+<?php
+include_once "core/init.php";
+$user = new User();
+$user->checkCookie();
+if(!$user->isLoggedIn()){
+    Redirect::to('login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,10 +17,12 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to the admin area!</h1>
+        <h1>Welcome to the admin area, <?php echo escape($user->data()->username); ?>!</h1>
     </header>
     <main>
-        <button name="logout" value="logout">Logout</button>
+        <ul>
+            <li><a href="logout.php">Logout</a></li>
+        </ul>
     </main>
 </body>
 </html>

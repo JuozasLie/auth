@@ -9,4 +9,7 @@ class Hash {
     public static function check($string, $hash){
         return password_verify($string, $hash);
     }
+    public static function makeRand(){
+        return hash("whirlpool", random_bytes(12));
+}
 }

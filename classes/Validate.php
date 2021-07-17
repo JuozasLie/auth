@@ -36,7 +36,7 @@ class Validate {
                             break;
                         case "unique":
                             $values = explode('/', $rule_value);
-                            $check = $this->_db->get($values[0], [$values[1], '=', $source[$item]]);
+                            $check = $this->_db->get($values[0], [$values[1], '=', strtolower($source[$item])]);
                             if($check->count()){
                                 $this->addError("{$field_name} already exists.");
                             }
