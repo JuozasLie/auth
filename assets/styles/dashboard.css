@@ -1,6 +1,7 @@
 header, main{
-    width: 100%;
-    height: auto;
     text-align: center;
     margin: 3rem;
+}
+li{
+    list-style: none;
 }

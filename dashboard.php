@@ -20,7 +20,14 @@ if(Session::exist('success')){
 </head>
 <body>
     <header>
-        <h1>Welcome to the admin area, <?php echo escape($user->data()->name); ?>!</h1>
+        <h1>Welcome to the dashboard area, <a href="profile.php?user=<?php echo escape($user->data()->username);?>"><?php echo escape($user->data()->name); ?></a>!</h1>
+        <?php
+        if($user->hasPermission('admin')){
+            ?>
+            <h2>Hello super admin <?php echo $user->data()->name; ?></h2>
+        <?php
+        }
+        ?>
     </header>
     <main>
         <ul>

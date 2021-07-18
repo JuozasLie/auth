@@ -53,11 +53,13 @@ class User{
     public function login($username = null, $password = null, $remember = false){
         if(!$username && !$password && $this->exists()){
             Session::put($this->_sessionName, $this->data()->id);
+            $this->_isLoggedIn = true;
         } else {
             $user = $this->find($username);
             if($user){
                 if(password_verify($password, $this->data()->password)){
                     Session::put($this->_sessionName, $this->data()->id);
+                    $this->_isLoggedIn = true;
                     if($remember){
                         $hashCheck = $this->_db->get('users_session', array('user_id', "=", $this->data()->id));
                         if(!$hashCheck->count()){
@@ -86,12 +88,35 @@ class User{
             $hash = Cookie::get($this->_cookieName);
             $hashCheck = $this->_db->get('users_session', array('hash', '=', $hash));
             if($hashCheck->count()){
-                $this->find($hashCheck->first()->user_id);
-                if(!$this->_isLoggedIn){
+                $user_id = $hashCheck->first()->user_id;
+                if($this->find($user_id)){
                     $this->login();
-                    $this->_isLoggedIn = true;
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+    public function hasPermission($key){
+        if($this->exists()){
+            $group = $this->_db->get('groups', array('id', '=', $this->data()->group));
+            if($group->count()){
+                $permissions = json_decode($group->first()->permissions, true);
+                if(isset($permissions)){
+                    if($permissions[$key]){
+                        return true;
+                    }
+                }
+            }
+        } else{
+            return false;
+        }
+    }
+    public function getType(){
+        if($this->exists()){
+            $group = $this->_db->get('groups', array('id', '=', $this->data()->group));
+            if($group->count()){
+                return $group->first()->name;
             }
         }
         return false;
